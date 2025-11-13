@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Registration Form</title>
+
+<style>
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(120deg, #6a11cb, #2575fc);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .container {
+    width: 400px;
+    background: #fff;
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+  }
+
+  label {
+    font-weight: 500;
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  input, select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    outline: none;
+    transition: 0.3s;
+  }
+
+  input:focus {
+    border-color: #2575fc;
+    box-shadow: 0 0 5px rgba(37, 117, 252, 0.4);
+  }
+
+  input.error {
+    border-color: red;
+    background: #ffe6e6;
+  }
+
+  button {
+    width: 100%;
+    background: #2575fc;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+  }
+
+  button:hover {
+    background: #1e63d6;
+  }
+
+  .alert {
+    text-align: center;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 6px;
+    margin-top: 10px;
+  }
+
+  .success {
+    background-color: #e6ffed;
+    color: #2e7d32;
+  }
+
+  .error-msg {
+    background-color: #ffebee;
+    color: #c62828;
+  }
+</style>
+</head>
+
+<body>
+  <div class="container">
+    <h2>Registration Form</h2>
+    <form id="registrationForm">
+      <label>First Name *</label>
+      <input type="text" id="firstName" required>
+
+      <label>Last Name *</label>
+      <input type="text" id="lastName" required>
+
+      <label>Email *</label>
+      <input type="email" id="email" required>
+
+      <label>Phone *</label>
+      <input type="tel" id="phone" placeholder="+91..." required>
+
+      <label>Password *</label>
+      <input type="password" id="password" required>
+
+      <label>Confirm Password *</label>
+      <input type="password" id="confirmPassword" required>
+
+      <label>
+        <input type="checkbox" id="terms" required> I agree to Terms & Conditions *
+      </label>
+
+      <button type="submit" id="submitBtn">Register</button>
+    </form>
+
+    <div id="message"></div>
+  </div>
+
+<script>
+const form = document.getElementById('registrationForm');
+const message = document.getElementById('message');
+
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  message.innerHTML = '';
+  document.querySelectorAll('input').forEach(i => i.classList.remove('error'));
+
+  const firstName = document.getElementById('firstName');
+  const lastName = document.getElementById('lastName');
+  const email = document.getElementById('email');
+  const phone = document.getElementById('phone');
+  const password = document.getElementById('password');
+  const confirmPassword = document.getElementById('confirmPassword');
+  const terms = document.getElementById('terms');
+
+  // Validations
+  if (!firstName.value.trim()) {
+    firstName.classList.add('error');
+    showError("❌ First name is required");
+    return;
+  }
+  if (!lastName.value.trim()) {
+    lastName.classList.add('error');
+    showError("❌ Last name is required");
+    return;
+  }
+  if (email.value.includes('@tempmail.com')) {
+    email.classList.add('error');
+    showError("❌ Disposable email domains not allowed");
+    return;
+  }
+  if (password.value !== confirmPassword.value) {
+    confirmPassword.classList.add('error');
+    showError("❌ Passwords do not match");
+    return;
+  }
+  if (!terms.checked) {
+    showError("❌ Please accept Terms & Conditions");
+    return;
+  }
+
+  showSuccess("✅ Registration Successful! Your profile has been submitted successfully.");
+  form.reset();
+});
+
+function showSuccess(msg) {
+  message.innerHTML = `<div class='alert success'>${msg}</div>`;
+}
+function showError(msg) {
+  message.innerHTML = `<div class='alert error-msg'>${msg}</div>`;
+}
+</script>
+</body>
+</html>
